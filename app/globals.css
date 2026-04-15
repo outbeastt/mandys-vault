@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --luxury-black: #050505;
+  --hot-pink: #FF69B4;
+  --neon-glow: 0 0 20px rgba(255, 105, 180, 0.6);
+}
+
+body {
+  background-color: var(--luxury-black);
+  color: white;
+}
+
+/* Custom animation for the pink glow */
+@keyframes neon-pulse {
+  0%, 100% { opacity: 1; text-shadow: var(--neon-glow); }
+  50% { opacity: 0.8; text-shadow: 0 0 10px rgba(255, 105, 180, 0.3); }
+}
+
+.animate-neon {
+  animation: neon-pulse 2s infinite;
+}
