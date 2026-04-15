@@ -1,20 +1,29 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const LuxuryClock = () => {
   const [timeLeft, setTimeLeft] = useState({ days: '00', hours: '00', minutes: '00', seconds: '00' });
   const [isMounted, setIsMounted] = useState(false);
+  
+  // 1. useRouter MUST be up here at the top level!
+  const router = useRouter(); 
 
   useEffect(() => {
     setIsMounted(true);
-    const targetDate = new Date('2026-04-25T00:00:00').getTime();
+    
+    // For testing right now, this is set to 15 seconds from when the page loads.
+    // Change this back to '2026-04-25T00:00:00' when you are done testing!
+   const targetDate = new Date('2026-04-25T00:00:00').getTime();
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
       const distance = targetDate - now;
 
-      if (distance < 0) {
+      // 2. We use 'distance' here, and router.push goes INSIDE the brackets!
+      if (distance <= 0) {
         clearInterval(timer);
+        router.push('/reveal');
         return;
       }
 
@@ -27,8 +36,11 @@ const LuxuryClock = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [router]);
 
+  if (!isMounted) return null;
+
+  // ... (Keep all your existing return ( <div> ... ) code below here!)
   if (!isMounted) return null;
 
   return (
