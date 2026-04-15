@@ -1,0 +1,1 @@
+export const supabasePlaceholder = "Ready for setup";
