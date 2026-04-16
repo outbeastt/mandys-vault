@@ -1,10 +1,12 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import MasonryGrid from './MasonryGrid';
 
 export default function Safe() {
   const [code, setCode] = useState([0, 0, 0]);
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [showGallery, setShowGallery] = useState(false);
 
   // The secret combination: 4 - 2 - 5 
   const SECRET_CODE = [4, 2, 5];
@@ -26,36 +28,29 @@ export default function Safe() {
     }
   }, [code]);
 
+  // When the button is clicked, we completely swap out the UI for the Gallery
+  if (showGallery) {
+    return (
+      <div style={{ minHeight: '100vh', width: '100%', backgroundColor: '#050505', fontFamily: 'sans-serif' }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
+          <MasonryGrid />
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <>
       <style>{`
-        .vault-title {
-          font-size: 3.75rem;
-        }
-        .dial-container {
-          gap: 2rem;
-        }
-        .dial-box {
-          height: 8rem;
-          width: 6rem;
-        }
-        .dial-number {
-          font-size: 4.5rem;
-        }
+        .vault-title { font-size: 3.75rem; }
+        .dial-container { gap: 2rem; }
+        .dial-box { height: 8rem; width: 6rem; }
+        .dial-number { font-size: 4.5rem; }
         @media (max-width: 768px) {
-          .vault-title {
-            font-size: 2.25rem !important;
-          }
-          .dial-container {
-            gap: 1rem !important;
-          }
-          .dial-box {
-            height: 6rem !important;
-            width: 4.5rem !important;
-          }
-          .dial-number {
-            font-size: 3.5rem !important;
-          }
+          .vault-title { font-size: 2.25rem !important; }
+          .dial-container { gap: 1rem !important; }
+          .dial-box { height: 6rem !important; width: 4.5rem !important; }
+          .dial-number { font-size: 3.5rem !important; }
         }
       `}</style>
 
@@ -74,15 +69,7 @@ export default function Safe() {
           <div className="dial-container" style={{ display: 'flex' }}>
             {code.map((digit, index) => (
               <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: '#0a0a0a', padding: '1rem', borderRadius: '1rem', border: '1px solid rgba(255,105,180,0.2)', boxShadow: 'inset 0 0 20px rgba(0,0,0,1)' }}>
-                
-                <button 
-                  onClick={() => handleSpin(index, 'up')} 
-                  style={{ background: 'transparent', border: 'none', color: '#6b7280', fontSize: '2.5rem', cursor: 'pointer', paddingBottom: '1rem', outline: 'none' }}
-                >
-                  ▲
-                </button>
-
-                {/* The Number Display Box */}
+                <button onClick={() => handleSpin(index, 'up')} style={{ background: 'transparent', border: 'none', color: '#6b7280', fontSize: '2.5rem', cursor: 'pointer', paddingBottom: '1rem', outline: 'none' }}>▲</button>
                 <div className="dial-box" style={{ overflow: 'hidden', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.9)', borderRadius: '0.5rem', borderTop: '4px solid #111', borderBottom: '4px solid #111', boxShadow: '0 0 15px rgba(255,105,180,0.1)' }}>
                   <AnimatePresence mode="popLayout">
                     <motion.span
@@ -98,13 +85,7 @@ export default function Safe() {
                     </motion.span>
                   </AnimatePresence>
                 </div>
-
-                <button 
-                  onClick={() => handleSpin(index, 'down')} 
-                  style={{ background: 'transparent', border: 'none', color: '#6b7280', fontSize: '2.5rem', cursor: 'pointer', paddingTop: '1rem', outline: 'none' }}
-                >
-                  ▼
-                </button>
+                <button onClick={() => handleSpin(index, 'down')} style={{ background: 'transparent', border: 'none', color: '#6b7280', fontSize: '2.5rem', cursor: 'pointer', paddingTop: '1rem', outline: 'none' }}>▼</button>
               </div>
             ))}
           </div>
@@ -129,7 +110,12 @@ export default function Safe() {
               Welcome to the inner sanctum.
             </p>
             
-            <button style={{ padding: '1rem 2rem', backgroundColor: 'transparent', border: '2px solid #FF69B4', color: '#FF69B4', borderRadius: '9999px', fontWeight: 'bold', letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer' }}>
+            <button 
+              onClick={() => setShowGallery(true)}
+              style={{ padding: '1rem 2rem', backgroundColor: 'transparent', border: '2px solid #FF69B4', color: '#FF69B4', borderRadius: '9999px', fontWeight: 'bold', letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.3s' }}
+              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#FF69B4'; e.currentTarget.style.color = '#000'; }}
+              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = '#FF69B4'; }}
+            >
               Enter Gallery
             </button>
           </motion.div>
