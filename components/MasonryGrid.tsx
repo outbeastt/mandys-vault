@@ -74,6 +74,46 @@ export default function MasonryGrid() {
   return (
     <>
       <style>{`
+      .video-placeholder { 
+          width: 100%; 
+          height: 240px; 
+          display: flex; 
+          flex-direction: column; 
+          justify-content: center; 
+          align-items: center; 
+          background: linear-gradient(135deg, #070707 0%, #111 100%);
+          border-bottom: 1px solid rgba(255,105,180,0.1); 
+          color: rgba(255,105,180,0.8);
+          position: relative;
+        }
+        .video-icon-wrapper {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          border: 1px solid rgba(255,105,180,0.3);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 1rem;
+          background: rgba(255,105,180,0.05);
+          box-shadow: 0 0 15px rgba(255,105,180,0.1);
+        }
+        .video-icon { font-size: 2rem; }
+        .video-label { 
+          font-size: 0.8rem; 
+          letter-spacing: 0.25em; 
+          text-transform: uppercase; 
+          font-weight: bold; 
+          color: #FF69B4;
+          text-shadow: 0 0 10px rgba(255,105,180,0.3);
+        }
+        .play-hint {
+          margin-top: 0.5rem;
+          font-size: 0.6rem;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: #6b7280;
+        }
         .masonry-container { 
           columns: 3 300px; 
           column-gap: 1.5rem; 
@@ -142,18 +182,18 @@ export default function MasonryGrid() {
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Improved Media Rendering */}
+            {/* Logic to handle media vs placeholders */}
             {memory.image_url ? (
               isVideo(memory.image_url) ? (
-                // Native HTML5 Video Player
-                <video 
-                  src={memory.image_url} 
-                  controls 
-                  preload="metadata"
-                  className="memory-media"
-                >
-                  Your browser does not support the video tag.
-                </video>
+                // THE RETURN OF THE SPECIAL IMAGE: 
+                // This creates a beautiful, consistent "Video" card
+                <div className="video-placeholder">
+                  <div className="video-icon-wrapper">
+                    <span className="video-icon">🎬</span>
+                  </div>
+                  <span className="video-label">Video Message</span>
+                  <div className="play-hint">Ready to Decrypt</div>
+                </div>
               ) : (
                 // Standard Image Rendering
                 <img 
