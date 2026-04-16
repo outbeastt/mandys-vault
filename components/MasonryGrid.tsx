@@ -74,18 +74,53 @@ export default function MasonryGrid() {
   return (
     <>
       <style>{`
-      .video-placeholder { 
-          width: 100%; 
-          height: 240px; 
-          display: flex; 
-          flex-direction: column; 
-          justify-content: center; 
-          align-items: center; 
-          background: linear-gradient(135deg, #070707 0%, #111 100%);
-          border-bottom: 1px solid rgba(255,105,180,0.1); 
-          color: rgba(255,105,180,0.8);
-          position: relative;
+      .video-placeholder {
+          width: 100%;
+          height: 220px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          background: linear-gradient(180deg, #0a0a0a 0%, #111 100%);
+          border-bottom: 1px solid rgba(255,105,180,0.1);
+          color: #FF69B4;
+          cursor: pointer;
         }
+        .play-button-outer {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          border: 2px solid #FF69B4;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 1rem;
+          background: rgba(255,105,180,0.05);
+          box-shadow: 0 0 15px rgba(255,105,180,0.2);
+        }
+        .play-triangle {
+          width: 0;
+          height: 0;
+          border-top: 10px solid transparent;
+          border-bottom: 10px solid transparent;
+          border-left: 16px solid #FF69B4;
+          margin-left: 4px; /* Centers the triangle visually */
+        }
+        .video-label {
+          font-size: 0.8rem;
+          letter-spacing: 0.25em;
+          text-transform: uppercase;
+          font-weight: 900;
+          text-shadow: 0 0 10px rgba(255,105,180,0.3);
+        }
+        .video-subtext {
+          font-size: 0.65rem;
+          color: #6b7280;
+          margin-top: 0.4rem;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+          
         .video-icon-wrapper {
           width: 60px;
           height: 60px;
@@ -182,25 +217,21 @@ export default function MasonryGrid() {
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Logic to handle media vs placeholders */}
             {memory.image_url ? (
               isVideo(memory.image_url) ? (
-                // THE RETURN OF THE SPECIAL IMAGE: 
-                // This creates a beautiful, consistent "Video" card
-                <div className="video-placeholder">
-                  <div className="video-icon-wrapper">
-                    <span className="video-icon">🎬</span>
+                <div className="video-placeholder" onClick={() => window.open(memory.image_url!, '_blank')}>
+                  <div className="play-button-outer">
+                    <div className="play-triangle"></div>
                   </div>
-                  <span className="video-label">Video Message</span>
-                  <div className="play-hint">Ready to Decrypt</div>
+                  <span className="video-label">Video Memo</span>
+                  <span className="video-subtext">Tap to Play</span>
                 </div>
               ) : (
-                // Standard Image Rendering
                 <img 
                   src={memory.image_url} 
                   alt={`Memory from ${memory.name}`} 
-                  className="memory-media" 
-                  loading="lazy" 
+                  className="memory-media"
+                  loading="lazy"
                 />
               )
             ) : null}
